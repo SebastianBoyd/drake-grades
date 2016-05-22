@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <dom-module id="Polymer-Grades-app">
@@ -64,6 +65,19 @@
       paper-input {
         width: 85%;
       }
+      paper-progress {
+        margin-top: 16px;
+        width: 95%;
+        margin-left: 2.5%;
+        --paper-progress-active-color: var(--paper-light-blue-500);
+      }
+      .hidden {
+        display: none;
+        opacity: 0;
+      }
+      #loginErrorText {
+        margin-left: 8px;
+      }
     </style>
     <div>
       <iron-pages attr-for-selected="id" selected="home" class="vertical center layout">
@@ -77,15 +91,20 @@
           <div class="smallSquare"></div>
           <div class="horizontal center layout">
             <iron-icon icon="icons:account-circle" class="loginPageIcon"></iron-icon>
-            <paper-input label="Username"></paper-input>
+            <paper-input value="{{usrInput}}" label="Username"></paper-input>
           </div>
           <div class="horizontal center layout">
-            <iron-icon id="usrInput"icon="icons:lock" class="loginPageIcon"></iron-icon>
-            <paper-input id="pwInput" type="password" on-keypress="_keyPressed" label="Password"></paper-input>
+            <iron-icon icon="icons:lock" class="loginPageIcon"></iron-icon>
+            <paper-input value="{{pwInput}}" type="password" on-keypress="_keyPressed" label="Password"></paper-input>
           </div>
           <paper-button raised on-tap="_login">Login</paper-button>
-
+          <paper-progress indeterminate class="hidden"></paper-progress>
+          <div style="margin-top:16px; margin-left:8px;color:red;" class="horizontal center layout hidden" id="errorContainer">
+            <iron-icon icon="icons:error"></iron-icon>
+            <div id="loginErrorText">Login Error</div>
+          </div>
         </div>
+
         <div>
 
         </div>
@@ -110,15 +129,38 @@
       _showInput: function() {
         var pages = document.querySelector('iron-pages');
         pages.select('login');
-         this.classList.add('dark');
+        this.classList.add('dark');
       },
 
       _login: function() {
-        console.log('click');
+        var prog = document.querySelector('paper-progress');
+        var err = document.getElementById('errorContainer');
+        prog.classList.remove('hidden');
+        err.classList.add('hidden')
+        var http = new XMLHttpRequest();
+        var url = "https://powerful-depths-26532.herokuapp.com/login";
+        var params = "login=" + this.usrInput + "&password=" + this.pwInput;
+        http.open("POST", url, true);
+        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4) {
+              if (http.status == 200) {
+                this.classData = http.responseText;
+                console.log(http.responseText);
+                prog.classList.add('hidden');
+              }
+              else {
+                console.log(http.status);
+                prog.classList.add('hidden');
+                err.classList.remove('hidden')
+
+              }
+            }
+        }
+        http.send(params);
       },
       _keyPressed: function(e) {
         if (13 === e.charCode) {
-            console.log('uokvgg');
             this._login();
         }
     },
