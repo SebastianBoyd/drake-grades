@@ -105,6 +105,10 @@
         height: 100vh;
         background-color: white;
       }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
     </style>
 
     <div>
@@ -128,11 +132,6 @@
         on-error="_handleError"
         debounce-duration="300">
       </iron-ajax>
-
-      <iron-localstorage name="data-local-store"
-        value="{{data}}"
-        on-iron-localstorage-load-empty="initializeDefaultCartoon">
-      </iron-localstorage>
 
       <iron-pages attr-for-selected="name" selected="[[routeData.view]]" class="vertical center layout">
 
@@ -167,15 +166,25 @@
             <div class="headerText">Classes</div>
           </div>
           <template is="dom-repeat" items="{{data.classes}}">
-            <div class="horizontal center layout classListItem">
-              <div class="flex">{{item.title}}</div>
-              <div style="width: 16px;  margin-left: 8px;">{{item.grade_letter}}</div>
-            </div>
+            <a href="/#/{{item.url}}">
+              <div class="horizontal center layout classListItem">
+                <div class="flex">{{item.title}}</div>
+                <div style="width: 16px;  margin-left: 8px;">{{item.grade_letter}}</div>
+              </div>
+            </a>
           </template>
         </div>
 
+        <template is="dom-repeat" items="{{data.classes}}">
+          <div class="horizontal center layout classListItem" name={{item.url}}>
+            <div class="flex">{{item.title}}</div>
+            <div style="width: 16px;  margin-left: 8px;">{{item.grade_letter}}</div>
+          </div>
+          <div>
+            more data lata
+          </div>
+        </template>
 
-        <div>Three</div>
       </iron-pages>
     </div>
 
@@ -238,32 +247,7 @@
         this.loginDetails = "login=" + this.usrInput + "&password=" + this.pwInput;
         gtr.generateRequest();
         prog.classList.remove('hidden');
-        err.classList.add('hidden')
-
-        /*
-        var http = new XMLHttpRequest();
-        var url = "https://powerful-depths-26532.herokuapp.com/login";
-        var params = "login=" + this.usrInput + "&password=" + this.pwInput;
-        http.open("POST", url, true);
-        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4) {
-              if (http.status == 200) {
-                console.log(this);
-                this.data = JSON.parse(http.responseText).classes
-                console.log(this.data);
-                prog.classList.add('hidden');
-                pages.select('home');
-              }
-              else {
-                console.log(http.status);
-                prog.classList.add('hidden');
-                err.classList.remove('hidden')
-
-              }
-            }
-        }
-        http.send(params); */
+        err.classList.add('hidden');
       },
       _keyPressed: function(e) {
         if (13 === e.charCode) {
