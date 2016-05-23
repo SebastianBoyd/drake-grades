@@ -11,6 +11,8 @@
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
 
 <dom-module id="Polymer-Grades-app">
   <template>
@@ -18,7 +20,7 @@
       :host {
         display: block;
         font-family: 'Roboto';
-        background-color: #fff;
+        background-color: #F4F4F4;
       }
       :host.dark {
         background-color: #F4F4F4;
@@ -73,7 +75,6 @@
         --paper-progress-active-color: var(--paper-light-blue-500);
       }
       .hidden {
-        display: none;
         opacity: 0;
       }
       #loginErrorText {
@@ -91,6 +92,7 @@
         width: 100vw;
         height: 20vh;
         background: #2196F3;
+        margin-bottom: 10px;
       }
       .headerText {
         color: white;
@@ -98,9 +100,22 @@
         font-size: 2em;
         margin-bottom: 16px;
       }
+      .splashContainer {
+        width: 100vw;
+        height: 100vh;
+        background-color: white;
+      }
     </style>
 
     <div>
+      <app-location use-hash-as-path route="{{route}}"></app-location>
+
+      <app-route
+        route="{{route}}"
+        pattern="/:view"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
       <iron-ajax
         id="dataGetter"
         url="https://powerful-depths-26532.herokuapp.com/login"
@@ -119,14 +134,16 @@
         on-iron-localstorage-load-empty="initializeDefaultCartoon">
       </iron-localstorage>
 
-      <iron-pages attr-for-selected="id" selected="splash" class="vertical center layout">
+      <iron-pages attr-for-selected="name" selected="[[routeData.view]]" class="vertical center layout">
 
-        <div class="" id="splash" on-tap="_showInput">
-          <div class="square"></div>
-          <div class="text">Sebastian Boyd</div>
+        <div class="vertical center layout splashContainer" name="" style="">
+          <div class="" on-tap="_showInput">
+            <div class="square"></div>
+            <div class="text">Sebastian Boyd</div>
+          </div>
         </div>
 
-        <div id="login" class="vertical center layout">
+        <div id="login" name="login" class="vertical center layout">
           <div class="smallSquare"></div>
           <div class="horizontal center layout">
             <iron-icon icon="icons:account-circle" class="loginPageIcon"></iron-icon>
@@ -137,14 +154,15 @@
             <paper-input value="{{pwInput}}" type="password" on-keypress="_keyPressed" label="Password"></paper-input>
           </div>
           <paper-button raised on-tap="_login">Login</paper-button>
-          <paper-progress indeterminate class="hidden"></paper-progress>
+
           <div style="margin-top:16px; margin-left:8px;color:red;" class="horizontal center layout hidden" id="errorContainer">
             <iron-icon icon="icons:error"></iron-icon>
             <div id="loginErrorText">Login Error</div>
           </div>
+          <paper-progress indeterminate class="hidden"></paper-progress>
         </div>
 
-        <div id="home" class="vertical center layout">
+        <div name="home" class="vertical center layout">
           <div class="header horizontal end layout">
             <div class="headerText">Classes</div>
           </div>
@@ -167,6 +185,15 @@
 
       is: 'Polymer-Grades-app',
 
+      ready: function() {
+        this.async(function() {
+          // If the path is blank, redirect to /
+          if (!this.route.path) {
+            this.set('route.path', '/');
+          }
+        });
+      },
+
       properties: {
         prop1: {
           type: String,
@@ -176,7 +203,7 @@
 
       _showInput: function() {
         var pages = document.querySelector('iron-pages');
-        pages.select('login');
+        this.set('route.path', '/login');
         this.classList.add('dark');
       },
 
@@ -195,7 +222,7 @@
         var prog = document.querySelector('paper-progress');
         var err = document.getElementById('errorContainer');
         gtr = document.getElementById('dataGetter');
-
+        this.pwInput = '';
         prog.classList.add('hidden');
         err.classList.remove('hidden');
 
