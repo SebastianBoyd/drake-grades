@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="Polymer-Grades-app">
   <template>
@@ -78,11 +79,43 @@
       #loginErrorText {
         margin-left: 8px;
       }
+      .classListItem {
+        background: white;
+        width: 80vw;
+        padding: 24px 16px;
+        font-size: 1.1em;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+      .header {
+        width: 100%;
+        height: 10vh;
+        background: #2196F3;
+      }
     </style>
-    <div>
-      <iron-pages attr-for-selected="id" selected="home" class="vertical center layout">
 
-        <div class="" id="home" on-tap="_showInput">
+    <div>
+      <iron-ajax
+        id="dataGetter"
+        url="https://powerful-depths-26532.herokuapp.com/login"
+        last-response="{{data}}"
+        handle-as="json"
+        body="{{loginDetails}}"
+        method="POST"
+        content-type="application/x-www-form-urlencoded"
+        on-response="_handleResponse"
+        on-error="_handleError"
+        debounce-duration="300">
+      </iron-ajax>
+
+      <iron-localstorage name="data-local-store"
+        value="{{data}}"
+        on-iron-localstorage-load-empty="initializeDefaultCartoon">
+      </iron-localstorage>
+
+      <iron-pages attr-for-selected="id" selected="splash" class="vertical center layout">
+
+        <div class="" id="splash" on-tap="_showInput">
           <div class="square"></div>
           <div class="text">Sebastian Boyd</div>
         </div>
@@ -105,9 +138,18 @@
           </div>
         </div>
 
-        <div>
-
+        <div id="home" class="vertical center layout">
+          <div class="header">
+            Hello
+          </div>
+          <template is="dom-repeat" items="{{data.classes}}">
+            <div class="horizontal center layout classListItem">
+              <div class="flex">{{item.title}}</div>
+              <div style="width: 16px;  margin-left: 8px;">{{item.grade_letter}}</div>
+            </div>
+          </template>
         </div>
+
         <div>Three</div>
       </iron-pages>
     </div>
@@ -132,11 +174,39 @@
         this.classList.add('dark');
       },
 
+      _handleResponse: function() {
+        console.log('response');
+        gtr = document.getElementById('dataGetter')
+        var pages = document.querySelector('iron-pages');
+        var prog = document.querySelector('paper-progress');
+        console.log(gtr.lastResponse);
+        pages.select('home');
+        prog.classList.add('hidden');
+      },
+
+      _handleError: function() {
+        console.log('error');
+        var prog = document.querySelector('paper-progress');
+        var err = document.getElementById('errorContainer');
+        gtr = document.getElementById('dataGetter');
+
+        prog.classList.add('hidden');
+        err.classList.remove('hidden');
+
+        console.log(gtr.lastError);
+      },
+
       _login: function() {
         var prog = document.querySelector('paper-progress');
         var err = document.getElementById('errorContainer');
+        var pages = document.querySelector('iron-pages');
+        gtr = document.getElementById('dataGetter');
+        this.loginDetails = "login=" + this.usrInput + "&password=" + this.pwInput;
+        gtr.generateRequest();
         prog.classList.remove('hidden');
         err.classList.add('hidden')
+
+        /*
         var http = new XMLHttpRequest();
         var url = "https://powerful-depths-26532.herokuapp.com/login";
         var params = "login=" + this.usrInput + "&password=" + this.pwInput;
@@ -145,9 +215,11 @@
         http.onreadystatechange = function() {//Call a function when the state changes.
             if(http.readyState == 4) {
               if (http.status == 200) {
-                this.classData = http.responseText;
-                console.log(http.responseText);
+                console.log(this);
+                this.data = JSON.parse(http.responseText).classes
+                console.log(this.data);
                 prog.classList.add('hidden');
+                pages.select('home');
               }
               else {
                 console.log(http.status);
@@ -157,7 +229,7 @@
               }
             }
         }
-        http.send(params);
+        http.send(params); */
       },
       _keyPressed: function(e) {
         if (13 === e.charCode) {
