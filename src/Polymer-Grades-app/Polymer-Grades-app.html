@@ -14,7 +14,7 @@
 
 <dom-module id="Polymer-Grades-app">
   <template>
-    <style include="iron-flex">
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
         font-family: 'Roboto';
@@ -88,9 +88,15 @@
         border-radius: 4px;
       }
       .header {
-        width: 100%;
-        height: 10vh;
+        width: 100vw;
+        height: 20vh;
         background: #2196F3;
+      }
+      .headerText {
+        color: white;
+        margin-left: 16px;
+        font-size: 2em;
+        margin-bottom: 16px;
       }
     </style>
 
@@ -139,8 +145,8 @@
         </div>
 
         <div id="home" class="vertical center layout">
-          <div class="header">
-            Hello
+          <div class="header horizontal end layout">
+            <div class="headerText">Classes</div>
           </div>
           <template is="dom-repeat" items="{{data.classes}}">
             <div class="horizontal center layout classListItem">
