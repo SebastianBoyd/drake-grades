@@ -1,0 +1,26 @@
+
+application: drake-grades
+
+# Version 1.0 (Alpha 2)
+version: 1-0
+api_version: 1
+runtime: python27
+threadsafe: true
+
+
+handlers:
+
+# Static website
+- url: /
+  static_files: build/unbundled/index.html
+  upload: build/unbundled/index\.html
+  secure: always
+- url: /
+  static_dir: build/unbundled
+  secure: always
+
+libraries:
+- name: endpoints
+  version: 1.0
+- name: pycrypto
+  version: latest
