@@ -22,9 +22,6 @@
         font-family: 'Roboto';
         background-color: #F4F4F4;
       }
-      :host.dark {
-        background-color: #F4F4F4;
-      }
       .square {
         margin-top: 10vh;
         width: 90vw;
@@ -82,17 +79,16 @@
       }
       .classListItem {
         background: white;
-        width: 80vw;
         padding: 24px 16px;
         font-size: 1.1em;
-        margin: 10px 0;
+        margin: 16px 6%;
         border-radius: 4px;
       }
       .header {
         width: 100vw;
         height: 20vh;
         background: #2196F3;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
       }
       .headerText {
         color: white;
@@ -104,6 +100,7 @@
         width: 100vw;
         height: 100vh;
         background-color: white;
+        z-index: 0;
       }
       a {
         color: inherit;
@@ -160,7 +157,7 @@
           <paper-button raised on-tap="_login">Login</paper-button>
         </div>
 
-        <div name="home" class="vertical center layout">
+        <div name="home" class="">
           <div class="header horizontal end layout">
             <div class="headerText">Classes</div>
           </div>
