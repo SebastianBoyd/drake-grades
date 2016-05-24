@@ -152,13 +152,12 @@
             <iron-icon icon="icons:lock" class="loginPageIcon"></iron-icon>
             <paper-input value="{{pwInput}}" type="password" on-keypress="_keyPressed" label="Password"></paper-input>
           </div>
-          <paper-button raised on-tap="_login">Login</paper-button>
-
           <div style="margin-top:16px; margin-left:8px;color:red;" class="horizontal center layout hidden" id="errorContainer">
             <iron-icon icon="icons:error"></iron-icon>
             <div id="loginErrorText">Login Error</div>
           </div>
           <paper-progress indeterminate class="hidden"></paper-progress>
+          <paper-button raised on-tap="_login">Login</paper-button>
         </div>
 
         <div name="home" class="vertical center layout">
