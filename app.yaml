@@ -1,9 +1,4 @@
 
-application: drake-grades
-
-# Version 1.0 (Alpha 2)
-version: 1-0
-api_version: 1
 runtime: python27
 threadsafe: true
 
@@ -12,11 +7,11 @@ handlers:
 
 # Static website
 - url: /
-  static_files: build/unbundled/index.html
-  upload: build/unbundled/index\.html
+  static_files: build/default/index.html
+  upload: build/default/index\.html
   secure: always
 - url: /
-  static_dir: build/unbundled
+  static_dir: build/default
   secure: always
 
 libraries:
