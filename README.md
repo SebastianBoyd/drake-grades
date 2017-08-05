@@ -1,2 +1,1 @@
-# sebastianboyd.github.io
-my website
+# grades.sebastianboyd.com
