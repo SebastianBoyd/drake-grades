@@ -24,8 +24,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-icons.html">
 
 <link rel="lazy-import" href="my-login.html">
-<link rel="lazy-import" href="my-view2.html">
-<link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="my-class-list.html">
+<link rel="lazy-import" href="my-class.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="iron-flex iron-flex-alignment">
       :host {
-        --app-primary-color: #2140DB;
+        --app-primary-color: #0C35FB;
         --app-secondary-color: black;
         background-color: #2140DB;
         display: block;
@@ -63,6 +63,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       iron-pages {
         min-height: 100vh;
       }
+      iron-pages > * {
+        width: 100%;
+      }
     </style>
 
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
@@ -81,8 +84,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         role="main"
         class="layout center horizontal">
       <my-login name="login"></my-login>
-      <my-view2 name="view2"></my-view2>
-      <my-view3 name="view3"></my-view3>
+      <my-class-list name="class-list"></my-class-list>
+      <my-class name="class"></my-class>
       <my-view404 name="view404"></my-view404>
     </iron-pages>
   </template>
