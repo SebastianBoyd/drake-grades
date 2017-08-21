@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="my-icons.html">
 
 <dom-module id="my-class">
   <template>
@@ -25,30 +26,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: white;
         background-color: var(--app-primary-color);
         border-radius: 50%;
-        width: 86px;
-        height: 86px;
-        padding: 15px;
+        width: 72px;
+        height: 72px;
+        padding: 22px;
       }
       .title {
         color: black;
-        font-size: 2em;
+        font-size: 1.8em;
         position: absolute;
-        margin-left: 30%;
+        margin-left: 132px;
         margin-top: 0px;
         line-height: 40px;
+        max-width: 50%;
       }
       hr {
         margin-top: 16px;
         background-color: #979797;
         border: 0 none;
         color: #979797;
-        height: 1px;
+        height: 2px;
       }
     </style>
 
     <div class="card">
+
       <div class="horizontal layout">
-          <iron-icon icon="icons:lock" class="icon"></iron-icon>
+          <iron-icon icon="my-iconset:bacteria" class="icon"></iron-icon>
           <p class="title">
             AP English Language Comp
           </p>
@@ -56,9 +59,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <hr>
       
-      <h1>View Three</h1>
+      <h3>Current Grade</h3>
+      <h1>A-</h1>
+      <h3>Graph</h3>
+      <h3>Assignments</h3>
       <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
       <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+    
     </div>
   </template>
 
